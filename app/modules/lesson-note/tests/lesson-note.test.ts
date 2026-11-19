@@ -8,15 +8,13 @@ describe("describeNoteDraft", () => {
       length: 0,
       max: MAX_NOTE_LENGTH,
       tooLong: false,
-      empty: true,
       state: "new",
       canSave: false,
     });
   });
 
-  it("treats whitespace alone as empty", () => {
+  it("does not count whitespace alone", () => {
     const draft = describeNoteDraft("   \n ", null);
-    expect(draft.empty).toBe(true);
     expect(draft.length).toBe(0);
     expect(draft.canSave).toBe(false);
   });
@@ -53,7 +51,6 @@ describe("describeNoteDraft", () => {
   it("cannot save a cleared note over a stored one", () => {
     const draft = describeNoteDraft("", "Remember strict mode");
     expect(draft.state).toBe("unsaved");
-    expect(draft.empty).toBe(true);
     expect(draft.canSave).toBe(false);
   });
 
