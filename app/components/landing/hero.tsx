@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import type { LandingStats, Spotlight } from "~/modules/landing/index.server";
+import { courseHref } from "./course-meta";
 import { SpotlightCard } from "./spotlight-card";
 
 type HeroProps = {
@@ -77,7 +78,7 @@ function StatsRow({ stats }: { stats: LandingStats }) {
 function NewBadge({ spotlight }: { spotlight: Spotlight }) {
   return (
     <Link
-      to={`/courses/${spotlight.course.slug}`}
+      to={courseHref(spotlight.course)}
       className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
     >
       <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">

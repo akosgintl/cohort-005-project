@@ -4,7 +4,6 @@ import {
   BookOpen,
   ListChecks,
   Route as RouteIcon,
-  User,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
@@ -15,6 +14,7 @@ import {
   CardHeader,
 } from "~/components/ui/card";
 import { CourseImage } from "~/components/course-image";
+import { CourseMeta, courseHref } from "./course-meta";
 import type { LandingCourse } from "~/modules/landing/index.server";
 
 const valueProps: { icon: LucideIcon; title: string; body: string }[] = [
@@ -91,7 +91,7 @@ export function NewestCourses({ courses }: { courses: LandingCourse[] }) {
 
 function CourseCard({ course }: { course: LandingCourse }) {
   return (
-    <Link to={`/courses/${course.slug}`} className="group">
+    <Link to={courseHref(course)} className="group">
       <Card className="h-full overflow-hidden pt-0 transition-shadow group-hover:shadow-md">
         <CourseImage
           src={course.coverImageUrl}
@@ -111,15 +111,12 @@ function CourseCard({ course }: { course: LandingCourse }) {
             {course.description}
           </p>
         </CardContent>
-        <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <User className="size-3" />
-            {course.instructorName}
-          </span>
-          <span className="flex items-center gap-1">
-            <BookOpen className="size-3" />
-            {course.lessonCount} lessons
-          </span>
+        <CardFooter>
+          <CourseMeta
+            course={course}
+            className="w-full justify-between text-xs text-muted-foreground"
+            iconClassName="size-3"
+          />
         </CardFooter>
       </Card>
     </Link>

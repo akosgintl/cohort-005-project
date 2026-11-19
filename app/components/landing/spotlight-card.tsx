@@ -1,6 +1,7 @@
 import { Link } from "react-router";
-import { ArrowRight, BookOpen, User } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CourseImage } from "~/components/course-image";
+import { CourseMeta, courseHref } from "./course-meta";
 import type {
   LandingCourse,
   Spotlight,
@@ -30,7 +31,7 @@ export function SpotlightCard({ spotlight }: { spotlight: Spotlight }) {
                 `+${moduleCount - modules.length} more modules`}
             </span>
             <Link
-              to={`/courses/${course.slug}`}
+              to={courseHref(course)}
               className="flex items-center gap-1 font-medium hover:text-primary"
             >
               See the course
@@ -52,16 +53,11 @@ function CourseSummary({ course }: { course: LandingCourse }) {
       <h2 className="mt-2 text-xl font-semibold leading-snug">
         {course.title}
       </h2>
-      <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
-        <span className="flex items-center gap-1">
-          <User className="size-3.5" />
-          {course.instructorName}
-        </span>
-        <span className="flex items-center gap-1">
-          <BookOpen className="size-3.5" />
-          {course.lessonCount} lessons
-        </span>
-      </div>
+      <CourseMeta
+        course={course}
+        className="mt-2 gap-4 text-sm text-muted-foreground"
+        iconClassName="size-3.5"
+      />
     </>
   );
 }
