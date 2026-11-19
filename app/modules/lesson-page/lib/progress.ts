@@ -122,17 +122,17 @@ function watchState(
   return { lastWatchPosition: last?.position ?? 0, watchProgress };
 }
 
-/**
- * Records that the Student opened the Lesson and returns their progress:
- * the Lesson's status, every Lesson's status in the course for the sidebar,
- * and where to resume the video.
- */
 export type Visit = {
   studentId: number;
   courseId: number;
   lesson: Pick<Lesson, "id" | "videoUrl" | "durationMinutes">;
 };
 
+/**
+ * Records that the Student opened the Lesson and returns their progress:
+ * the Lesson's status, every Lesson's status in the course for the sidebar,
+ * and where to resume the video.
+ */
 export function visitLesson(
   db: Db,
   { studentId, courseId, lesson }: Visit
