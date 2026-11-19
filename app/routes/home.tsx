@@ -67,6 +67,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     countryTierInfo,
     countries,
   } = loaderData;
+  const signedIn = currentUser !== null;
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -128,14 +129,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </header>
 
-      <Hero
-        stats={stats}
-        spotlight={spotlight}
-        signedIn={currentUser !== null}
-      />
+      <Hero stats={stats} spotlight={spotlight} signedIn={signedIn} />
       <ValueProps />
       <NewestCourses courses={newestCourses} />
-      <LandingFooter signedIn={currentUser !== null} />
+      <LandingFooter signedIn={signedIn} />
 
       <DevUI
         users={users}
