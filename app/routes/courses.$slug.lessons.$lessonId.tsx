@@ -64,6 +64,17 @@ function lessonRef(params: { slug: string; lessonId: string }): CourseRef {
   return { slug: params.slug, lessonId: params.lessonId };
 }
 
+const lessonParamsSchema = z.object({
+  lessonId: z.coerce.number().int().positive(),
+});
+
+/** The permission check has already found the lesson, so a bad id is a 404. */
+function lessonIdOf(params: { lessonId: string }): number {
+  const parsed = lessonParamsSchema.safeParse(params);
+  if (!parsed.success) throw data("Lesson not found", { status: 404 });
+  return parsed.data.lessonId;
+}
+
 /**
  * What each action intent needs: comments, Bookmarks and Notes need view;
  * progress and quizzes need take. Moderating Discussions (deleting someone
@@ -79,14 +90,22 @@ const INTENT_CAPABILITY: Record<string, Capability | undefined> = {
   "submit-quiz": "take",
 };
 
+const quizAnswerSchema = z.tuple([
+  z.coerce.number().int().positive(),
+  z.coerce.number().int().positive(),
+]);
+
 /** Form fields named "question-{questionId}" hold the chosen option id. */
 function quizAnswers(formData: FormData): Record<number, number> {
   const answers: Record<number, number> = {};
   for (const [key, value] of formData.entries()) {
     if (!key.startsWith("question-")) continue;
-    const questionId = Number(key.replace("question-", ""));
-    const optionId = Number(value);
-    if (!isNaN(questionId) && !isNaN(optionId)) {
+    const parsed = quizAnswerSchema.safeParse([
+      key.slice("question-".length),
+      value,
+    ]);
+    if (parsed.success) {
+      const [questionId, optionId] = parsed.data;
       answers[questionId] = optionId;
     }
   }
@@ -112,7 +131,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const { course, person, enrolled, view, take, manage } = decisions;
   const currentUserId = person?.id ?? null;
 
-  const outline = lessonPage.getOutline(course.id, Number(params.lessonId));
+  const outline = lessonPage.getOutline(course.id, lessonIdOf(params));
   if (!outline) {
     throw data("Lesson not found", { status: 404 });
   }
@@ -191,7 +210,7 @@ export async function action({ params, request }: Route.ActionArgs) {
     ref
   );
   const currentUserId = person.id;
-  const lessonId = Number(params.lessonId);
+  const lessonId = lessonIdOf(params);
 
   // Scope a comment id to this lesson so a comment elsewhere can't be reached
   // by posting its id to this route.
