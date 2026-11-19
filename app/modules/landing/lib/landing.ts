@@ -10,10 +10,8 @@ import {
   users,
 } from "~/db/schema";
 
-// ─── Landing page ───
 // Everything the public landing page (`/`) shows. Only published courses
-// count: a draft or archived course is invisible to a visitor, so it is left
-// out of the figures as well as the course list.
+// count: see docs/adr/0014-the-landing-page-shows-only-published-courses.md.
 
 export type Db = BetterSQLite3Database<typeof schema>;
 
