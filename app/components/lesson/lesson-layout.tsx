@@ -1,3 +1,4 @@
+import type { LessonProgressStatus } from "~/db/schema";
 import type { CurriculumModule } from "~/modules/lesson-page/types";
 import { CurriculumSidebar } from "./curriculum-sidebar";
 import { LessonBreadcrumb } from "./lesson-breadcrumb";
@@ -15,7 +16,7 @@ export function LessonLayout({
     module: { id: number; title: string };
     lesson: { id: number; title: string };
   };
-  lessonProgressMap: Record<number, string>;
+  lessonProgressMap: Record<number, LessonProgressStatus>;
   enrolled: boolean;
   children: React.ReactNode;
 }) {

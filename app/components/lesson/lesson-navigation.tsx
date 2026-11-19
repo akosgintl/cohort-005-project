@@ -35,7 +35,10 @@ export function LessonCompletion({
   lessonId,
   lessonStatus,
   nextLesson,
-}: Neighbours & { lessonId: number; lessonStatus: string | null }) {
+}: Neighbours & {
+  lessonId: number;
+  lessonStatus: LessonProgressStatus | null;
+}) {
   const fetcher = useFetcher({ key: `mark-complete-${lessonId}` });
   const navigate = useNavigate();
   const isMarking =

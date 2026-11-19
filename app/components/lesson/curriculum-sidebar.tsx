@@ -9,7 +9,7 @@ type SidebarLessonProps = {
   courseSlug: string;
   lesson: { id: number; title: string };
   isCurrent: boolean;
-  status: string | undefined;
+  status: LessonProgressStatus | undefined;
   enrolled: boolean;
 };
 
@@ -23,7 +23,7 @@ export function CurriculumSidebar({
   course: { id: number; title: string; slug: string };
   curriculum: CurriculumModule[];
   currentLessonId: number;
-  lessonProgressMap: Record<number, string>;
+  lessonProgressMap: Record<number, LessonProgressStatus>;
   enrolled: boolean;
 }) {
   return (
@@ -122,7 +122,11 @@ function SidebarLesson({
   );
 }
 
-function LessonStatusIcon({ status }: { status: string | undefined }) {
+function LessonStatusIcon({
+  status,
+}: {
+  status: LessonProgressStatus | undefined;
+}) {
   if (status === LessonProgressStatus.Completed) {
     return <CheckCircle2 className="size-3.5 shrink-0 text-green-500" />;
   }

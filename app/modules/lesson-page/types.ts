@@ -1,4 +1,4 @@
-import type { lessons } from "~/db/schema";
+import type { LessonProgressStatus, QuestionType, lessons } from "~/db/schema";
 
 export type Lesson = typeof lessons.$inferSelect;
 
@@ -28,8 +28,8 @@ export type LessonOutline = {
 
 /** The Student's progress through the Lesson and its course. */
 export type LessonVisit = {
-  lessonStatus: string | null;
-  lessonProgressMap: Record<number, string>;
+  lessonStatus: LessonProgressStatus | null;
+  lessonProgressMap: Record<number, LessonProgressStatus>;
   lastWatchPosition: number;
   watchProgress: number;
 };
@@ -61,7 +61,7 @@ export type LessonQuiz = {
   questions: Array<{
     id: number;
     questionText: string;
-    questionType: string;
+    questionType: QuestionType;
     position: number;
     options: Array<{ id: number; optionText: string }>;
   }>;
